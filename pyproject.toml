@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["rikyiso01 <riky.isola@gmail.com>"]
 readme = "README.md"
-packages = [{include = "matricola_finder"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"

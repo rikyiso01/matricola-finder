@@ -1,0 +1,15 @@
+{
+    "name": "matricola-finder",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "poetry run python render.py && tsc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "typescript": "^5.1.6"
+    }
+}

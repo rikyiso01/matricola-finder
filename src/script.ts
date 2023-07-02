@@ -87,7 +87,6 @@ function on_search() {
 
 function main() {
     SEARCH.oninput = on_search;
-    assert(false);
 }
 
 main();

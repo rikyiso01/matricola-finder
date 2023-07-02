@@ -71,10 +71,13 @@ function search(text: string): boolean[] {
 
 function match(student: Student, keywords: string[]): boolean {
     for (let keyword of keywords) {
-        if (student.name.includes(keyword)) return true;
-        if (student.matricola.includes(keyword)) return true;
+        if (
+            !student.name.includes(keyword) &&
+            !student.matricola.includes(keyword)
+        )
+            return false;
     }
-    return false;
+    return true;
 }
 
 function on_search() {

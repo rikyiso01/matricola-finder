@@ -1,15 +1,19 @@
 {
     "name": "matricola-finder",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "source": ".rendered/index.html",
     "scripts": {
-        "build": "poetry run python render.py && tsc"
+        "dev": "poetry run python render.py -d",
+        "build": "poetry run python render.py",
+        "clean": "rm -r .parcel-cache .rendered dist"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "typescript": "^5.1.6"
+        "parcel": "^2.9.3"
+    },
+    "dependencies": {
+        "beercss": "^3.2.13"
     }
 }

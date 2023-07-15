@@ -1,11 +1,8 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
 from yaml import safe_load
 from typing import TypedDict
-from os import makedirs
-
-env = Environment(
-    loader=FileSystemLoader(searchpath="src"), autoescape=select_autoescape()
-)
+from staticjinja import Site
+from subprocess import Popen, check_call
+from argparse import ArgumentParser
 
 
 class InputStudent(TypedDict):
@@ -29,7 +26,7 @@ def parse_student(student: InputStudent) -> OutputStudent | None:
     }
 
 
-def main():
+def index():
     with open("students.yml", "rt") as file:
         data: dict[str, InputStudent] = safe_load(file)
     students: list[OutputStudent] = []
@@ -42,11 +39,27 @@ def main():
         students,
         key=lambda x: x["matricola"],
     )
-    template = env.get_template("index.html")
-    makedirs(".out", exist_ok=True)
-    with open(".out/index.html", "wt") as file:
-        file.write(template.render(students=students))
+    return {"students": students}
+
+
+def main(dev: bool):
+    site = Site.make_site(
+        contexts=[("index.html", index)], searchpath="src", outpath=".rendered"
+    )
+    if dev:
+        site.render()
+        with Popen(["pnpm", "exec", "parcel", "serve"]):
+            site.render(use_reloader=True)
+    else:
+        site.render()
+        check_call(["pnpm", "exec", "parcel", "build"])
+
+
+def entry():
+    parser = ArgumentParser()
+    parser.add_argument("--dev", "-d", action="store_true", default=False)
+    main(**vars(parser.parse_args()))
 
 
 if __name__ == "__main__":
-    main()
+    entry()

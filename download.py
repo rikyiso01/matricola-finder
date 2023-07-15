@@ -1,6 +1,5 @@
 from httpx import Client, TransportError
 from bs4 import BeautifulSoup, Tag
-from os import environ
 from typing import TypedDict
 from time import sleep
 from random import randint
@@ -8,6 +7,7 @@ from yaml import safe_dump, safe_load
 from os.path import exists
 from datetime import timedelta
 from traceback import print_exc
+from tomllib import load
 
 SAML_LOGIN_URL = "https://unigepass.unige.it/idp/module.php/core/loginuserpass.php"
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
@@ -127,9 +127,9 @@ def get_student_info(client: Client, student_link: str) -> Student | None:
 
 
 def main():
-    client = unigepass_login(
-        AULAWEB_LOGIN, environ["UNIGEPASS_USERNAME"], environ["UNIGEPASS_PASSWORD"]
-    )
+    with open("unigepass.toml", "rb") as f:
+        auth = load(f)
+    client = unigepass_login(AULAWEB_LOGIN, auth["username"], auth["password"])
     response = client.get(STUDENTS_PAGE)
     response.raise_for_status()
     sesskey = get_sesskey(response.text)

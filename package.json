@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "poetry run python render.py -d",
         "build": "poetry run python render.py",
-        "clean": "rm -r .parcel-cache .rendered dist"
+        "clean": "rm -rf .parcel-cache .rendered dist"
     },
     "keywords": [],
     "author": "",

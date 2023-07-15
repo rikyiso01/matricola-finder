@@ -42,7 +42,7 @@ def index():
     return {"students": students}
 
 
-def main(dev: bool):
+def main(dev: bool, public_url: str | None):
     site = Site.make_site(
         contexts=[("index.html", index)], searchpath="src", outpath=".rendered"
     )
@@ -52,12 +52,17 @@ def main(dev: bool):
             site.render(use_reloader=True)
     else:
         site.render()
-        check_call(["pnpm", "exec", "parcel", "build"])
+        args = ["pnpm", "exec", "parcel", "build"]
+        if public_url is not None:
+            args.append("--public-url")
+            args.append(public_url)
+        check_call(args)
 
 
 def entry():
     parser = ArgumentParser()
     parser.add_argument("--dev", "-d", action="store_true", default=False)
+    parser.add_argument("--public-url")
     main(**vars(parser.parse_args()))
 
 

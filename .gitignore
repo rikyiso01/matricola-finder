@@ -294,7 +294,12 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Local
+# Elm
+# elm-package generated files
+elm-stuff
+# elm-repl generated files
+repl-temp-*
 
-.rendered
+# Local
+src/Data.elm
 unigepass.toml

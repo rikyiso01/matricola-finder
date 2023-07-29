@@ -9,37 +9,15 @@
     <link rel="icon" href="favicon.svg">
 
     <script type="module" src="/node_modules/beercss/dist/cdn/beer.min.js"></script>
-    <script type="module" src="script.ts"></script>
     <meta name="description" content="Associa la matricola allo studente">
 </head>
 
 <body>
-    <div class="toast error" id="error"><i>error</i>Ops, c'è stato un problema</div>
-    <main class="responsive">
-        <h1>Matricola Finder</h1>
-        <div class="field label prefix border">
-            <i>search</i>
-            <input type="text" id="search">
-            <label for="search">Cerca</label>
-        </div>
-        <table class="border" id="table">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Matricola</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                <tr>
-                    <td>{{ student['name'] }}</td>
-                    <td>{{ student['matricola'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </main>
-
+    <div id="root"></div>
+    <script type="module">
+        import { Elm } from "./Main.elm";
+        Elm.Main.init({ node: document.getElementById("root") });
+    </script>
 </body>
 
 

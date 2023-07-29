@@ -1,8 +1,15 @@
+from __future__ import annotations
 from yaml import safe_load
 from typing import TypedDict
-from staticjinja import Site
-from subprocess import Popen, check_call
-from argparse import ArgumentParser
+
+
+def render_elm(data: list[OutputStudent]):
+    array = [
+        f'{{name="{student["name"].lower()}", matricola="{student["matricola"]}"}}'
+        for student in data
+    ]
+    return f"""module Data exposing (data)
+data=[{','.join(array)}]"""
 
 
 class InputStudent(TypedDict):
@@ -26,7 +33,7 @@ def parse_student(student: InputStudent) -> OutputStudent | None:
     }
 
 
-def index():
+def data():
     with open("students.yml", "rt") as file:
         data: dict[str, InputStudent] = safe_load(file)
     students: list[OutputStudent] = []
@@ -39,32 +46,13 @@ def index():
         students,
         key=lambda x: x["matricola"],
     )
-    return {"students": students}
+    return students
 
 
-def main(dev: bool, public_url: str | None):
-    site = Site.make_site(
-        contexts=[("index.html", index)], searchpath="src", outpath=".rendered"
-    )
-    if dev:
-        site.render()
-        with Popen(["pnpm", "exec", "parcel", "serve"]):
-            site.render(use_reloader=True)
-    else:
-        site.render()
-        args = ["pnpm", "exec", "parcel", "build"]
-        if public_url is not None:
-            args.append("--public-url")
-            args.append(public_url)
-        check_call(args)
-
-
-def entry():
-    parser = ArgumentParser()
-    parser.add_argument("--dev", "-d", action="store_true", default=False)
-    parser.add_argument("--public-url")
-    main(**vars(parser.parse_args()))
+def main():
+    with open("src/Data.elm", "wt") as file:
+        file.write(render_elm(data()))
 
 
 if __name__ == "__main__":
-    entry()
+    main()

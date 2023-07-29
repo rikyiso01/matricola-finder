@@ -1,16 +1,16 @@
 {
     "name": "matricola-finder",
     "version": "1.0.0",
-    "source": ".rendered/index.html",
+    "source": "src/index.html",
     "scripts": {
-        "dev": "poetry run python render.py -d",
-        "build": "poetry run python render.py",
-        "clean": "rm -rf .parcel-cache .rendered dist"
+        "dev": "poetry run python render.py && parcel serve",
+        "build": "poetry run python render.py && parcel build",
+        "clean": "rm -rf .parcel-cache dist"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "devDependencies": {
+        "@parcel/transformer-elm": "2.9.3",
+        "elm": "0.19.1-5",
+        "elm-format": "^0.8.7",
         "parcel": "^2.9.3"
     },
     "dependencies": {

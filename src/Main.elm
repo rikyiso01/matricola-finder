@@ -56,19 +56,19 @@ view model =
                     , th [] [ text "Matricola" ]
                     ]
                 ]
-            , tbody [] (map row (filter (rowFilter model) data))
+            , tbody [] <| map row <| filter (rowFilter model) data
             ]
         ]
 
 
 rowFilter : Model -> Student -> Bool
 rowFilter model student =
-    all (\keyword -> contains keyword student.name || contains keyword student.matricola) (map toLower (split " " model.search))
+    all (\keyword -> contains keyword student.name || contains keyword student.matricola) <| map toLower <| split " " model.search
 
 
 capitalize : String -> String
 capitalize string =
-    join " " (map capitalizeWord (split " " string))
+    join " " <| map capitalizeWord <| split " " string
 
 
 capitalizeWord : String -> String
